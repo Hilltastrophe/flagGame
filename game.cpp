@@ -63,7 +63,7 @@ Menu Game::getMenu()
 
 int Game::getNoCorrect()
 {
-	return no_correct;
+	return this->no_correct;
 }
 
 
@@ -78,7 +78,7 @@ int Game::play()
 		//get random number for the correct flag
 		srand(time(nullptr));
 		int correctFlag = rand() % 224;
-		int* correctAnswer = new int(correctFlag);
+		int* correctAnswer = new int(correctFlag); //pointer for correct answer
 
 		//variables
 		int i = 0;
@@ -94,22 +94,17 @@ int Game::play()
 		for (int i = 0; i < size; i++)
 		{
 
-			// Generate a random number between 1 and 224
+			// Generate a random number between 0 and 223
 			randomNum = rand() % 224;
 
 			// Check if the number already exists in the array
 			for (int j = 0; j < i; j++)
 			{
-				while (checkArray[j] == randomNum)
+				while (checkArray[j] == randomNum || checkArray[j] == correctFlag)
 				{
 					// If the number is a duplicate, generate a new random number and check again
 					randomNum = rand() % 224;
 					j = -1; // Start from the beginning of the array
-				}
-				while (checkArray[j] == correctFlag)
-				{
-					randomNum = rand() % 224;
-					j = -1;
 				}
 			}
 
@@ -118,7 +113,7 @@ int Game::play()
 
 			//assign the name of the flag to the final array
 			choices[i] = this->menu.getConfig().getFlagNameAt(randomChoice[i]);
-			menu.setChoice(i, choices[i]);
+			menu.setChoice(i, choices[i]); //set the choice array
 		}
 
 		//get the name of the correct flag
@@ -129,23 +124,27 @@ int Game::play()
 		choices[randomNum] = flagName; //assign the correct flag to that position
 
 
-		menu.setChoice(randomNum, choices[randomNum]);
+		menu.setChoice(randomNum, choices[randomNum]); //set the correct answer to choice array
+
+		//Keep track of # of questions
+		gout << setPos(200, 30) << "Question #" << questions + 1 << endg;
+		questions += 1;
 
 		menu.displayFlag(flagName);
 		answer = menu.displayMenu();
+		
 
 
 		int yValue = 235 + (size * 20);
 		int eraser = drawRect(200, yValue, 300, 20);
 		setColor(eraser, 0, 0, 0);
 
-		if (answer == randomNum + 1)
+		if (answer == randomNum + 1) //check if answer is = to position of the correct answer
 		{
 			
 			gout << setPos(200, yValue) << endg;
 			gout << setPos(200, yValue + 11) << "Correct!" << endg;
-			correct++;
-			questions++;
+			correct += 1;
 			setQuestionNo(questions);
 			setNoCorrect(correct);
 		}
@@ -153,7 +152,6 @@ int Game::play()
 		{
 			gout << setPos(200, yValue) << endg;
 			gout << setPos(200, yValue + 11) << "Nope, the answer is " << menu.getConfig().getFlagNameAt(correctFlag) << "! " << endg;
-			questions++;
 			setQuestionNo(questions);
 		}
 
@@ -171,7 +169,8 @@ int Game::play()
 		choices = NULL;
 		correctAnswer = NULL;
 
-	} while (questions < menu.getConfig().getNoChoices());
+	} while (questions < menu.getConfig().getNoQuestions());
+
 
 	return correct;
 }

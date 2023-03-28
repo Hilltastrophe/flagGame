@@ -48,11 +48,13 @@ void Menu::setConfig(Configuration config)
     this->config.setNoFlagNames(config.getNoFlagNames());
     this->config.setNoChoices(config.getNoChoices());
     
+    //set the flag name
     for (int i = 0; i < config.getNoFlagNames(); i++)
     {
         this->config.setFlagNameAt(config.getFlagNameAt(i),i);
     }
     
+    //set choices array
     this->choices = new string[config.getNoChoices()];
     for (int i = 0; i < config.getNoChoices(); i++)
     {
@@ -92,7 +94,7 @@ Configuration Menu::getConfig()
     return config;
 }
 
-
+//Menu population
 int Menu::displayMenu()
 {
     int i;
@@ -103,9 +105,9 @@ int Menu::displayMenu()
 
     for (i = 0; i < size; i++)
     {
-        int boxes = drawRect(200, yVal, 300, 15);
-        setColor(boxes, 100, 100, 100);
-        gout << setPos(200, yVal+11) << i + 1 << ". " << getChoice(i) << endg;
+        int boxes = drawRect(200, yVal, 300, 15); //question boxes
+        setColor(boxes, 128, 128, 128); //question box color
+        gout << setPos(200, yVal+11) << i + 1 << ". " << getChoice(i) << endg; //choices
         yVal += 20;
     }
 
@@ -120,6 +122,9 @@ int Menu::displayMenu()
 //Displays the flag within the graphics window.
 void Menu::displayFlag(string flag_name)
 {
-    displayBMP(flag_name + ".bmp", 200, 50);
+    int border = drawRect(199, 49, 239, 156); //flag border
+    setColor(border, 128, 128, 128); //flag border color
+   
+    displayBMP(flag_name + ".bmp", 200, 50); //flag file
 }
 

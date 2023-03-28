@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 int main()
 {
 	char again = 'n';
@@ -50,9 +51,11 @@ int main()
 
 		Configuration config(names, 224);
 
-		int noQuestions = 0;
+		double noQuestions = 0.0;
 		int noChoices = 0;
 		int answer = 0;
+		double result = 0.0;
+		double numCorrect = 0.0;
 		
 		cout << "This quiz is on current and historic flags from around the world.\n";
 		cout << "Enter # of questions for the quiz: (3 to 20) ";
@@ -72,10 +75,10 @@ int main()
 
 		Game game;
 		game.setMenu(menu);
-		double numCorrect = game.play();
+		numCorrect = game.play();
 
 		//get the average score
-		double result = numCorrect / config.getNoQuestions() * 100;
+		result = (numCorrect / noQuestions) * 100;
 
 
 		gout << setPos(200, 220) << "Quiz Over" << endg;
@@ -83,13 +86,17 @@ int main()
 
 		cout << "Would you like to take the quiz again? (y/n)";
 		cin >> again;
-		
+
 		if (again == 'y' || again == 'Y')
 		{
 			clearGraphics(); //clear graphics
 			system("cls"); //clear console
 		}
+
 		
 	} while (again == 'y' || again == 'Y');
+
+	clearGraphics();
+
 	
 }

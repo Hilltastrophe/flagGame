@@ -125,6 +125,6 @@ void Menu::displayFlag(string flag_name)
     int border = drawRect(199, 49, 239, 156); //flag border
     setColor(border, 128, 128, 128); //flag border color
    
-    displayBMP(flag_name + ".bmp", 200, 50); //flag file
+    displayBMP("flags/" + flag_name + ".bmp", 200, 50); //flag file
 }
 
